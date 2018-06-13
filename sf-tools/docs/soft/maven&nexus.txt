@@ -1,0 +1,52 @@
+
+http://114.55.72.6:8081/nexus/index.html
+0575s123456
+
+#nexus
+wget https://sonatype-download.global.ssl.fastly.net/nexus/oss/nexus-2.11.2-06-bundle.tar.gz
+tar -zxvf nexus-2.11.2-06-bundle.tar.gz
+mv nexus-2.11.2-06/ /usr/local
+cd /usr/local/nexus-2.11.2-06/
+编辑$NEXUS_HOME/conf/nexus.properties自定设置参数，包括端口号等
+vi conf/nexus.properties
+vi /etc/profile  加入export RUN_AS_USER=root
+运行nexus
+./bin/nexus start
+关闭nexus
+./bin/nexus stop
+http://****:8081/nexus/index.html
+默认账户：admin
+默认密码：admin123
+
+
+
+#jdk
+查看yum库中都有哪些jdk版本
+yum search java|grep jdk
+安装完之后，默认的安装目录是在: /usr/lib/jvm/java-1.8.0-openjdk-1.8.0.131-0.b11.el6_9.x86_64
+yum install java-1.8.0-openjdk.x86_64
+vi /etc/profile 追加
+#set java environment
+JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk-1.8.0.131-0.b11.el6_9.x86_64
+JRE_HOME=$JAVA_HOME/jre
+CLASS_PATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib
+PATH=$PATH:$JAVA_HOME/bin:$JRE_HOME/bin
+export JAVA_HOME JRE_HOME CLASS_PATH PATH
+让修改生效
+source /etc/profile
+验证JDK有效性
+java -version
+
+
+#maven
+wget http://mirrors.hust.edu.cn/apache/maven/maven-3/3.5.0/binaries/apache-maven-3.5.0-bin.tar.gz
+tar -zxvf apache-maven-3.5.0-bin.tar.gz
+mv apache-maven-3.5.0/ /usr/local
+vi /etc/profile  加上：
+export M2_HOME=/usr/local/apache-maven-3.5.0
+export M2=$M2_HOME/bin
+export PATH=$M2:$PATH
+执行 mvn -version
+
+
+

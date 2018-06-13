@@ -1,0 +1,13 @@
+spring:
+  aop:
+    proxy-target-class: true
+  application:
+    name: dubbo-center
+
+
+
+
+
+
+
+

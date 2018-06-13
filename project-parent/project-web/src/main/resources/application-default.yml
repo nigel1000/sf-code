@@ -1,0 +1,60 @@
+server:
+  port: 9091
+spring:
+  application:
+    name: web-app
+multiRedis:
+  singlePool:
+    hostName: 127.0.0.1
+    port: 6379
+alibaba:
+  oss:
+    accessDataMap:
+      pub-doc:
+        region: cn-hangzhou
+        version: 2015-04-01
+        roleRam: unkonw
+        time: 900
+        effect: Allow
+        action: oss:DoesBucketExist,oss:SetBucketCORS,oss:CreateBucket,oss:PutObject,oss:DeleteObject,
+        resource: acs:oss:unkonw:unkonw:demo-open-doc/,
+        isPrivate: false
+        key: unkonw
+        secret: unkonw
+        endPoint: unkonw
+        type: write
+        bucket: demo-open-doc
+      pri-doc:
+        region: cn-hangzhou
+        version: 2015-04-01
+        roleRam: unkonw
+        time: 900
+        effect: Allow
+        action: oss:DoesBucketExist,oss:SetBucketCORS,oss:CreateBucket,oss:PutObject,oss:DeleteObject,
+        resource: acs:oss:unkonw:unkonw:demo-open-doc/,
+        isPrivate: false
+        key: unkonw
+        secret: unkonw
+        endPoint: unkonw
+        type: write
+        bucket: demo-close-doc
+shiro:
+  loginUrl: /login
+#  successUrl: /security/welcome
+#  unauthorizedUrl: /error/404
+  urlFilters: /office/*=anon,/redis/*=anon,/project/*=projectFilter
+  shiroAnnotations:
+    - cn.sf.project.controller.security
+  filters:
+    projectFilter:
+      className: cn.sf.project.security.ProjectFilter
+      loginRequest: /security/login
+      anonUrls:
+        - /project/getById
+        - /project/get/*
+
+
+
+
+
+

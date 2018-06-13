@@ -1,0 +1,62 @@
+spring:
+  application:
+    name: sf-mybatis-app
+  profiles:
+    active: default
+
+
+multiMybatis:
+  mybatisMap:
+    master:
+      configLocation: classpath:/mybatis-config.xml
+      typeAliases:
+        - "cn.sf.mybatis.test.prepare.Project"
+#      mapperScan:
+#        - "cn.sf.mybatis.test.prepare.dao"
+      mapperLocations:
+        - "classpath*:/mapper/*Mapper.xml"
+      url: "jdbc:mysql://localhost:3306/db_project?characterEncoding=UTF-8&useSSL=false"
+      username: "root"
+      password: "#/d5)anzaVlN"
+      driverClassName: "com.mysql.jdbc.Driver"
+      dateSourceType: "com.alibaba.druid.pool.DruidDataSource"
+      dataSourceName: "defaultMasterDataSource"
+      transactionManagerName: "defaultMasterTransactionManager"
+      sqlSessionFactoryName: "defaultMasterSqlSessionFactory"
+      sqlSessionTemplateName: "defaultMasterSqlSessionTemplate"
+      testOnBorrow: true
+      validationQuery: SELECT 1
+      validationQueryTimeout: 1000
+      initialSize: 5
+      maxActive: 20
+      minIdle: 0
+      maxWait: 60000
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 100
+    slave:
+      configLocation: classpath:/mybatis-config.xml
+      typeAliases:
+        - "cn.sf.mybatis.test.prepare.Project"
+      mapperScan:
+        - "cn.sf.mybatis.test.prepare.dao"
+      mapperLocations:
+        - "classpath*:/mapper/*Mapper.xml"
+      url: "jdbc:mysql://localhost:3306/db_project?characterEncoding=UTF-8&useSSL=false"
+      username: "root"
+      password: "#/d5)anzaVlN"
+      driverClassName: "com.mysql.jdbc.Driver"
+      dateSourceType: "com.alibaba.druid.pool.DruidDataSource"
+      dataSourceName: "defaultSlaveDataSource"
+      transactionManagerName: "defaultSlaveTransactionManager"
+      sqlSessionFactoryName: "defaultSlaveSqlSessionFactory"
+      sqlSessionTemplateName: "defaultSlaveSqlSessionTemplate"
+      testOnBorrow: true
+      validationQuery: SELECT 1
+      validationQueryTimeout: 1000
+      initialSize: 5
+      maxActive: 20
+      minIdle: 0
+      maxWait: 60000
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 100
+

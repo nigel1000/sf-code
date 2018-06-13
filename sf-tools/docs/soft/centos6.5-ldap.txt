@@ -1,0 +1,138 @@
+
+http://114.55.72.6/phpldapadmin/index.php
+
+1.安装
+    yum -y install openldap openldap-servers openldap-devel
+
+    查看rpm安装包的命令  有没有安装Berkely-DB：
+    rpm -qa | grep db4
+2.设置
+    拷贝LDAP配置文件到LDAP目录(redhat6.3)：
+    cd /etc/openldap/
+    cp /usr/share/openldap-servers/slapd.conf.obsolete slapd.conf
+
+    创建LDAP管理员密码
+    slappasswd
+    test123456
+    {SSHA}TZ4LLD1+6vEhgImRg62o9ekiOG84v5Qo
+
+    编译配置文件
+    vi /etc/openldap/slapd.conf
+    # enable server status monitoring (cn=monitor)
+    database monitor
+    access to *
+            by dn.exact="gidNumber=0+uidNumber=0,cn=peercred,cn=external,cn=auth" read
+            by dn.exact="cn=admin,dc=0575s,dc=com" read
+            by * none
+    # database definitions
+    database        bdb
+    suffix          "dc=0575s,dc=com"
+    rootdn          "cn=admin,dc=0575s,dc=com"
+    rootpw  {SSHA}TZ4LLD1+6vEhgImRg62o9ekiOG84v5Qo
+
+    拷贝DB_CONFIG文件到指定目录
+    cp /usr/share/openldap-servers/DB_CONFIG.example  /var/lib/ldap/DB_CONFIG
+    删除默认/etc/openldap/slapd.d下面的所有内容，否则后面在使用ldapadd的时候会报错：
+    rm -rf /etc/openldap/slapd.d/*
+3.启动
+    赋予配置目录相应权限：
+    chown -R ldap:ldap /var/lib/ldap
+    chown -R ldap:ldap /etc/openldap
+
+    测试并生成配置文件
+    slaptest  -f /etc/openldap/slapd.conf -F /etc/openldap/slapd.d
+
+    赋予生成的配置文件予权限并重启：
+    chown -R ldap:ldap /etc/openldap/slapd.d
+    chmod -R 755 /etc/openldap/slapd.d
+
+    启动LDAP的slapd服务,并设置自启动：
+    service slapd restart
+    chkconfig slapd on
+
+4.migrationtools使用   加入系统内的用户可忽略
+    yum install migrationtools -y
+
+    进入migrationtool配置目录
+    cd /usr/share/migrationtools/
+
+    vi  migrate_common.ph
+    # Default DNS domain
+    $DEFAULT_MAIL_DOMAIN = "0575s.com";
+    # Default base
+    $DEFAULT_BASE = "dc=0575s,dc=com";
+
+    利用pl脚本将/etc/passwd 和/etc/shadow生成LDAP能读懂的文件格式，保存在/tmp/下
+    ./migrate_base.pl > ~/base.ldif
+    ./migrate_passwd.pl  /etc/passwd > ~/passwd.ldif
+    ./migrate_group.pl  /etc/group > ~/group.ldif
+
+    把这三个文件导入到LDAP，这样LDAP的数据库里就有了我们想要的用户
+    ldapadd -x -D "cn=admin,dc=0575s,dc=com" -W -f ~/base.ldif
+    ldapadd -x -D "cn=admin,dc=0575s,dc=com" -W -f ~/passwd.ldif
+    ldapadd -x -D "cn=admin,dc=0575s,dc=com" -W -f ~/group.ldif
+
+    重启slapd完成配置
+    service slapd restart
+
+5.安装NFS，并把ldapuser1的家目录做NFS共享   可忽略
+    默认REDHAT已安装
+    yum install nfs* -y
+
+    配置NFS共享：
+    # vi /etc/exports
+    --------------
+    /home/ldapuser1         *(rw,no_root_squash)
+    --------------
+
+    重启nfs服务：
+    # service rpcbind restart
+    # service nfs restart
+    PS.本地需要做ldap控制的账号都要导入到LDAP DB中，否则客户端配置无法正常识别登录。
+以上参考：http://blog.csdn.net/hitabc141592/article/details/22931179
+
+6.安装视图管理工具
+账号：cn=admin,dc=0575s,dc=com     密码：test123456
+
+    yum install phpldapadmin
+
+    vi /etc/httpd/conf.d/phpldapadmin.conf
+    <Directory /usr/share/phpldapadmin/htdocs>
+      Order Deny,Allow
+      #Deny from all
+      Allow from all
+      Allow from ::1
+    </Directory>
+
+    配置用DN登录
+    vi /etc/phpldapadmin/config.php
+    $servers->setValue('login','attr','dn');
+    // $servers->setValue('login','attr','uid');
+
+    重启apache
+    service httpd restart
+
+
+
+################################### jephon test123456 $servers->setValue('login','attr','uid');
+dn: uid=jephon,ou=People,dc=0575s,dc=com
+uid: jephon
+cn: sync
+objectClass: account
+objectClass: posixAccount
+objectClass: top
+objectClass: shadowAccount
+userPassword: {SSHA}TZ4LLD1+6vEhgImRg62o9ekiOG84v5Qo
+shadowLastChange: 15980
+shadowMin: 0
+shadowMax: 99999
+shadowWarning: 7
+uidNumber: 5
+gidNumber: 0
+homeDirectory: /sbin
+###################################  匿名登录不显示树根
+access to *
+        by self write
+        by users read
+#       by anonymous auth
+

@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sf.car.dao.BusDao">
+
+    <resultMap id="BusMap" type="cn.sf.car.domain.Bus">
+        <result column="id" property="id"/>
+        <result column="line_route_id" property="lineRouteId"/>
+        <result column="bus_no" property="busNo"/>
+        <result column="bus_system_no" property="busSystemNo"/>
+        <result column="licence_no" property="licenceNo"/>
+        <result column="created_at" property="createdAt"/>
+        <result column="updated_at" property="updatedAt"/>
+    </resultMap>
+
+    <sql id="tb">
+       bus
+    </sql>
+
+    <sql id="cols_all">
+       id,
+       line_route_id,
+       bus_no,
+       bus_system_no,
+       licence_no,
+       created_at,
+       updated_at
+    </sql>
+
+    <sql id="vals">
+        <if test="id != null ">#{id},</if>
+        <if test="id == null ">null,</if>
+        #{lineRouteId},
+        #{busNo},
+        #{busSystemNo},
+        #{licenceNo},
+        now(),
+        now()
+    </sql>
+
+    <sql id="vals_list">
+        (
+        <if test="item.id != null ">#{item.id},</if>
+        <if test="item.id == null ">null,</if>
+        #{item.lineRouteId},
+        #{item.busNo},
+        #{item.busSystemNo},
+        #{item.licenceNo},
+        now(),
+        now()
+        )
+    </sql>
+
+    <sql id="dynamic_condition">
+        <if test="lineRouteId != null ">AND line_route_id = #{lineRouteId}</if>
+        <if test="busNo != null ">AND bus_no = #{busNo}</if>
+        <if test="busNoLike != null and busNoLike != '' ">AND bus_no like concat('%', #{busNoLike},'%')</if>
+        <if test="busSystemNo != null ">AND bus_system_no = #{busSystemNo}</if>
+        <if test="busSystemNoLike != null and busSystemNoLike != '' ">AND bus_system_no like concat('%', #{busSystemNoLike},'%')</if>
+        <if test="licenceNo != null ">AND licence_no = #{licenceNo}</if>
+        <if test="licenceNoLike != null and licenceNoLike != '' ">AND licence_no like concat('%', #{licenceNoLike},'%')</if>
+    </sql>
+
+
+    <sql id="set">
+        <if test="lineRouteId !=null">,line_route_id = #{lineRouteId}</if>
+        <if test="busNo !=null">,bus_no = #{busNo}</if>
+        <if test="busSystemNo !=null">,bus_system_no = #{busSystemNo}</if>
+        <if test="licenceNo !=null">,licence_no = #{licenceNo}</if>
+    </sql>
+
+    <insert id="create" parameterType="cn.sf.car.domain.Bus" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO
+        <include refid="tb"/>
+        (
+        <include refid="cols_all"/>
+        )
+        VALUES
+        (
+        <include refid="vals"/>
+        )
+    </insert>
+
+    <insert id="creates" parameterType="list">
+        INSERT INTO
+        <include refid="tb"/>
+        (
+        <include refid="cols_all"/>
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            <include refid="vals_list"/>
+        </foreach>
+    </insert>
+
+    <update id="update" parameterType="cn.sf.car.domain.Bus">
+        UPDATE
+        <include refid="tb"/>
+        <set>
+            updated_at=now()
+            <include refid="set"/>
+        </set>
+        WHERE id=#{id}
+    </update>
+
+    <select id="paging" parameterType="map" resultMap="BusMap">
+        SELECT
+        <include refid="cols_all"/>
+        FROM
+        <include refid="tb"/>
+        WHERE 1=1
+        <include refid="dynamic_condition"/>
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="count" parameterType="map" resultType="long">
+        SELECT
+        count(1)
+        FROM
+        <include refid="tb"/>
+        WHERE 1=1
+        <include refid="dynamic_condition"/>
+    </select>
+
+    <select id="load" parameterType="long" resultMap="BusMap">
+        SELECT
+        <include refid="cols_all" />
+        FROM
+        <include refid="tb" />
+        WHERE id = #{id}
+    </select>
+
+    <select id="loads" resultMap="BusMap" parameterType="list">
+       SELECT
+           <include refid="cols_all"/>
+           FROM
+           <include refid="tb"/>
+       WHERE 1=1
+       AND id IN
+       <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+           #{item}
+       </foreach>
+    </select>
+
+    <select id="list" parameterType="map" resultMap="BusMap">
+        SELECT
+        <include refid="cols_all"/>
+        FROM
+        <include refid="tb"/>
+        WHERE 1=1
+        <include refid="dynamic_condition"/>
+    </select>
+
+    <delete id="delete" parameterType="long">
+        DELETE FROM
+        <include refid="tb"/>
+        WHERE id = #{id}
+    </delete>
+
+    <delete id="deletes" parameterType="list">
+        DELETE FROM
+        <include refid="tb"/>
+        WHERE id IN
+        <foreach collection="list" index="index" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>

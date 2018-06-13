@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+cn.sf.alibaba.oss.config.OssAutoConfig

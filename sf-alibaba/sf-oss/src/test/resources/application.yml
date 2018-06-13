@@ -1,0 +1,42 @@
+spring:
+  application:
+    name: sf-oss-app
+alibaba:
+  oss:
+    accessDataMap:
+      pub-doc:
+        region: cn-hangzhou
+        version: 2015-04-01
+        roleRam: unkonw
+        time: 900
+        effect: Allow
+        action: oss:DoesBucketExist,oss:SetBucketCORS,oss:CreateBucket,oss:PutObject,oss:DeleteObject,
+        resource: acs:oss:unkonw:unkonw:demo-open-doc/,
+        isPrivate: false
+        key: unkonw
+        secret: unkonw
+        endPoint: unkonw
+        type: write
+        bucket: demo-open-doc
+      pri-doc:
+        region: cn-hangzhou
+        version: 2015-04-01
+        roleRam: unkonw
+        time: 900
+        effect: Allow
+        action: oss:DoesBucketExist,oss:SetBucketCORS,oss:CreateBucket,oss:PutObject,oss:DeleteObject,
+        resource: acs:oss:unkonw:unkonw:demo-open-doc/,
+        isPrivate: false
+        key: unkonw
+        secret: unkonw
+        endPoint: unkonw
+        type: write
+        bucket: demo-close-doc
+
+      
+    
+
+
+
+
+

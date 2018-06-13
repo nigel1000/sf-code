@@ -1,0 +1,24 @@
+
+
+Java相关脚本(详见链接)
+    show-busy-java-threads.sh
+        用于快速排查Java的CPU性能问题(top us值过高)，自动查出运行的Java进程中消耗CPU多的线程，并打印出其线程栈，从而确定导致性能问题的方法调用。
+    show-duplicate-java-classes
+        找出jar文件和class目录中的重复类。用于排查Java类冲突问题。
+    find-in-jars.sh
+        在目录下所有jar文件里，查找类或资源文件。
+https://github.com/superhj1987/awesome-scripts
+https://github.com/oldratlee/useful-scripts/
+
+
+ssl服务端和客户端编码
+http://blog.csdn.net/a19881029/article/details/11742361
+axis web services
+http://blog.csdn.net/shan9liang/article/details/43235535
+一些优秀的博客
+https://www.cnkirito.moe/categories/  spring-oauth2 cloud security session rule
+http://www.ruanyifeng.com/blog/archives.html    阮一峰
+
+
+
+

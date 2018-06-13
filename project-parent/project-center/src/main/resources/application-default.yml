@@ -1,0 +1,59 @@
+server:
+  port: 9092
+spring:
+  application:
+    name: center-app
+multiRedis:
+  singlePool:
+    hostName: 127.0.0.1
+    port: 6379
+multiMybatis:
+  mybatisMap:
+    user:
+      configLocation: classpath:/spring/mybatis-config.xml
+#      typeAliases:
+#        - "cn.sf.mybatis.test.prepare.Project"
+      typeAliasesPackage: cn.sf.project.domain
+      mapperScan:
+        - "cn.sf.project.dao"
+      mapperLocations:
+        - "classpath*:/mapper/*Mapper.xml"
+      url: "jdbc:mysql://127.0.0.1:3306/db_project?characterEncoding=UTF-8&useSSL=false"
+      username: "root"
+      password: "#/d5)anzaVlN"
+      driverClassName: "com.mysql.jdbc.Driver"
+      dateSourceType: "com.alibaba.druid.pool.DruidDataSource"
+      dataSourceName: "defaultUserDataSource"
+      transactionManagerName: "defaultUserTransactionManager"
+      sqlSessionFactoryName: "defaultUserSqlSessionFactory"
+      sqlSessionTemplateName: "defaultUserSqlSessionTemplate"
+      testOnBorrow: true
+      validationQuery: SELECT 1
+      validationQueryTimeout: 1000
+      initialSize: 5
+      maxActive: 20
+      minIdle: 0
+      maxWait: 60000
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 100
+#  datasource:
+#    url: jdbc:mysql://127.0.0.1:3306/db_project?characterEncoding=UTF-8&useSSL=false
+#    username: root
+#    password: 123456
+#    driver-class-name: com.mysql.jdbc.Driver
+#    type: com.alibaba.druid.pool.DruidDataSource
+#    testOnBorrow: true
+#    validationQuery: SELECT 1
+#    validationQueryTimeout: 1000
+#    initialSize: 5
+#    maxActive: 20
+#    minIdle: 0
+#    maxWait: 60000
+#    poolPreparedStatements: true
+#    maxPoolPreparedStatementPerConnectionSize: 100
+#mybatis:
+#  mapperLocations: classpath*:/mapper/*Mapper.xml
+#  typeAliasesPackage: cn.sf.project.domain
+#  configLocation: classpath:/spring/mybatis-config.xml
+
+

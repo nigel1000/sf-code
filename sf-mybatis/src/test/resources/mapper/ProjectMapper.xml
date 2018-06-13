@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.sf.mybatis.test.prepare.dao.ProjectMapper">
+
+    <resultMap id="ProjectMap" type="Project">
+        <result column="id" property="id"/>
+        <result column="project_name" property="projectName"/>
+        <result column="project_type" property="projectType"/>
+    </resultMap>
+    <sql id="tb">
+        project
+    </sql>
+    <sql id="cols">
+        project_name,
+        project_type
+    </sql>
+    <sql id="cols_all">
+        id,
+        <include refid="cols"/>
+    </sql>
+    <sql id="vals">
+        #{projectName},
+        #{projectType}
+    </sql>
+    <sql id="vals_list">
+        (
+        #{item.projectName},
+        #{item.projectType}
+        )
+    </sql>
+    <sql id="dynamic_condition">
+        <if test="projectName != null ">AND project_name = #{projectName}</if>
+        <if test="projectNameLike != null and projectNameLike != '' ">AND project_name like concat('%', #{projectNameLike},'%')</if>
+        <if test="projectType != null ">AND project_type = #{projectType}</if>
+        <if test="orderBy !=null">ORDER BY ${orderBy}</if>
+    </sql>
+    <sql id="set">
+        <if test="projectName !=null">,project_name = #{projectName}</if>
+        <if test="projectType !=null">,project_type = #{projectType}</if>
+    </sql>
+    <insert id="create" parameterType="Project" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO
+        <include refid="tb"/>
+        (
+        <include refid="cols"/>
+        )
+        VALUES
+        (
+        <include refid="vals"/>
+        )
+    </insert>
+    <insert id="creates" parameterType="list">
+        INSERT INTO
+        <include refid="tb"/>
+        (
+        <include refid="cols"/>
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index" separator=",">
+            <include refid="vals_list"/>
+        </foreach>
+    </insert>
+    <update id="update" parameterType="Project">
+        UPDATE
+        <include refid="tb"/>
+        <set>
+            id=#{id}
+            <include refid="set"/>
+        </set>
+        WHERE id=#{id}
+    </update>
+    <select id="paging" parameterType="map" resultMap="ProjectMap">
+        SELECT
+        <include refid="cols_all"/>
+        FROM
+        <include refid="tb"/>
+        WHERE 1=1
+        <include refid="dynamic_condition"/>
+        LIMIT #{offset}, #{limit}
+    </select>
+    <select id="count" parameterType="map" resultType="long">
+        SELECT
+        count(1)
+        FROM
+        <include refid="tb"/>
+        WHERE 1=1
+        <include refid="dynamic_condition"/>
+    </select>
+    <select id="load" parameterType="long" resultMap="ProjectMap">
+        SELECT
+        <include refid="cols_all" />
+        FROM
+        <include refid="tb" />
+        WHERE id = #{id}
+    </select>
+    <select id="loads" resultMap="ProjectMap" parameterType="list">
+        SELECT
+        <include refid="cols_all"/>
+        FROM
+        <include refid="tb"/>
+        WHERE 1=1 AND id IN (
+        <foreach collection="list" item="item" index="index" separator=",">
+            #{item}
+        </foreach>
+        )
+    </select>
+    <select id="list" parameterType="map" resultMap="ProjectMap">
+        SELECT
+        <include refid="cols_all"/>
+        FROM
+        <include refid="tb"/>
+        WHERE 1=1
+        <include refid="dynamic_condition"/>
+    </select>
+    <delete id="delete" parameterType="long">
+        DELETE FROM
+        <include refid="tb"/>
+        WHERE id = #{id}
+    </delete>
+    <delete id="deletes" parameterType="list">
+        DELETE FROM
+        <include refid="tb"/>
+        WHERE
+        id
+        IN
+        (
+        <foreach collection="list" index="index" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+    </delete>
+
+</mapper>

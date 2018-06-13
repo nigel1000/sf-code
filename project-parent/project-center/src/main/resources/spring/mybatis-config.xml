@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "spring/mybatis-3-config.dtd">
+
+<configuration>
+    <typeHandlers>
+        <typeHandler handler="cn.sf.project.dao.handlers.EnumKeyTypeHandler"
+                     javaType="cn.sf.project.enums.ProjectType"/>
+    </typeHandlers>
+
+    <plugins>
+        <plugin interceptor="cn.sf.mybatis.plugins.SqlCostInterceptor"/>
+    </plugins>
+
+</configuration>

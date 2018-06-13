@@ -1,0 +1,8 @@
+#!/usr/bin/expect  -f
+
+set timeout -1
+spawn scp [lindex $argv 0] root@114.55.72.6:[lindex $argv 1]
+expect "*password:"
+send "[lindex $argv 2]\r"
+expect eof
+

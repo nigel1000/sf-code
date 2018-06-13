@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <dubbo:application name="project-center"/>
+    <dubbo:protocol name="dubbo" port="-1" threads="200" heartbeat="5000"/>
+    <dubbo:provider delay="-1" timeout="6000" retries="0"/>
+    <dubbo:registry id="center" protocol="zookeeper" address="127.0.0.1:2181" timeout="10000"/>
+
+    <!-- 服务配置 -->
+    <dubbo:service ref="projectService" interface="cn.sf.project.service.ProjectService" version="1.0.0"/>
+
+</beans>

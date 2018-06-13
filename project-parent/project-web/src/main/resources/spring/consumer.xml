@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--使用的dubbo服务,在这里注册-->
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <dubbo:application name="project-web" />
+    <dubbo:registry id="center" protocol="zookeeper" address="127.0.0.1:2181" timeout="10000"/>
+    <dubbo:consumer check="false" timeout="5000" retries="0" />
+
+    <!-- 服务配置 -->
+    <dubbo:reference retries="0" version="1.0.0" interface="cn.sf.project.service.ProjectService" id="projectService" />
+
+
+</beans>

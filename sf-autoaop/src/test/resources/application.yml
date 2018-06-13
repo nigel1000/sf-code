@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: sf-autoaop-app
+  profiles:
+    active: default
+
+
+
+

@@ -1,0 +1,3 @@
+# Run listener
+org.springframework.boot.SpringApplicationRunListener=\
+cn.sf.mybatis.config.MultiMybatisSpringListener

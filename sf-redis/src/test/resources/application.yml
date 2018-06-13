@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: sf-redis-app
+multiRedis:
+  singlePool:
+    hostName: 127.0.0.1
+    port: 6379
+#  sentinelPool:
+#    sentinels:
+#      - "127.0.0.1:6379"
+#      - "127.0.0.1:6380"
+#    clientName: 测试
+#  cluster:
+#    nodes:
+#      - "127.0.0.1:6379"
+#      - "127.0.0.1:6380"
+#    maxAttempts: 5
+
+
+
+
+      
+    
+
+
+
+
+
