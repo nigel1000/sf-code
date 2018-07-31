@@ -13,26 +13,28 @@ import lombok.Data;
 @Data
 public class ProjectReq {
 
-    @RapField(fieldMeans = "项目id")
+    @RapField(fieldMeans = "项目id", fieldMockValue = "14385835")
     @JsonSerialize(converter = Long2StringConverter.class)
     private Long id;
     private String projectName;
-    @JsonSerialize(using=EnumKeySerializer.class)
+    @JsonSerialize(using = EnumKeySerializer.class)
     private ProjectType projectType;
 
-    public Integer getProjectTypeKey(){
-        if(projectType==null){
+    public Integer getProjectTypeKey() {
+        if (projectType == null) {
             return null;
         }
         return projectType.getKey();
     }
-    public String getProjectTypeDesc(){
-        if(projectType==null){
+
+    public String getProjectTypeDesc() {
+        if (projectType == null) {
             return null;
         }
         return projectType.getDesc();
     }
-    public void setProjectTypeKey(int key){
+
+    public void setProjectTypeKey(int key) {
         this.projectType = ProjectType.NULL.genEnumByKey(key);
     }
 }

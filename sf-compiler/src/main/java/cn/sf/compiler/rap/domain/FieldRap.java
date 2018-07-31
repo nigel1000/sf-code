@@ -21,6 +21,7 @@ public class FieldRap {
     private String fieldType;
     private String fieldName;
     private String fieldMeans;
+    private String fieldMockValue;
 
     private Element fieldClazzEle;
 
@@ -37,6 +38,7 @@ public class FieldRap {
                     RapField rapField = innerEle.getAnnotation(RapField.class);
                     if (rapField != null) {
                         fieldRap.setFieldMeans(rapField.fieldMeans());
+                        fieldRap.setFieldMockValue(rapField.fieldMockValue());
                     }
                 }
                 fieldRaps.add(fieldRap);

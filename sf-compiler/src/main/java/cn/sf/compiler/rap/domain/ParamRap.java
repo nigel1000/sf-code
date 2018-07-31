@@ -18,6 +18,7 @@ public class ParamRap {
     private String paramType = "--";
     private String paramName = "--";
     private String paramMeans = "--";
+    private String paramMockValue;
 
     private Boolean isRequestBody;
 
@@ -36,6 +37,7 @@ public class ParamRap {
         if (AnnotationUtil.hasRapParam(paramEle)) {
             RapParam rapParam = paramEle.getAnnotation(RapParam.class);
             this.setParamMeans(rapParam.paramMeans());
+            this.setParamMockValue(rapParam.paramMockValue());
         }
         this.setIsRequestBody(AnnotationUtil.isRequestBody(paramEle));
     }

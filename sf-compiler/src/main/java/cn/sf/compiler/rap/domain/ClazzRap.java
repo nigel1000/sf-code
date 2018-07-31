@@ -42,13 +42,9 @@ public class ClazzRap {
         List<MethodRap> methodRapList = Lists.newArrayList();
         // 遍历Class内所有元素
         for (Element methodEle : classEle.getEnclosedElements()) {
-            if (!AnnotationUtil.hasRequestMapping(methodEle)) {
-                continue;
+            if (AnnotationUtil.hasRequestMapping(methodEle) && AnnotationUtil.hasRapMethod(methodEle)) {
+                methodRapList.add(new MethodRap((ExecutableElement) methodEle));
             }
-            if (!AnnotationUtil.hasRapMethod(methodEle)) {
-                continue;
-            }
-            methodRapList.add(new MethodRap((ExecutableElement)methodEle));
         }
         this.setMethodRapList(methodRapList);
     }

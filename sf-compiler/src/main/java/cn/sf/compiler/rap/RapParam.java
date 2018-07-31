@@ -11,4 +11,6 @@ public @interface RapParam {
 
     String paramMeans();
 
+    String paramMockValue() default "";
+
 }

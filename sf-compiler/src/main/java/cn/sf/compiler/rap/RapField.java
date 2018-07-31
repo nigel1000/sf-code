@@ -11,4 +11,6 @@ public @interface RapField {
 
     String fieldMeans();
 
+    String fieldMockValue() default "";
+
 }
